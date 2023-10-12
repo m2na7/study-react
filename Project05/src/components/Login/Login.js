@@ -41,19 +41,21 @@ const Login = (props) => {
     isValid: null,
   });
 
+  //한 번 유효성 검사를 하면 다시 실시 X
+  const { isValid: emailIsValid } = emailState;
+  const { isValid: passwordIsValid } = passwordState;
+
   useEffect(() => {
     const identifier = setTimeout(() => {
-      console.log("Check ..!");
-      setFormIsValid(
-        emailState.isValid && passwordState.isValid
-      );
+      console.log("Checking from validity!");
+      setFormIsValid(emailIsValid && passwordIsValid);
     }, 500);
 
     return () => {
       console.log("CLEAN UP");
       clearTimeout(identifier);
     };
-  }, [emailState, passwordState]);
+  }, [emailIsValid, passwordIsValid]);
 
   const emailChangeHandler = (event) => {
     dispatchEmail({ type: "USER_INPUT", val: event.target.value });
@@ -100,7 +102,7 @@ const Login = (props) => {
         <div
           className={`${classes.control} ${
             passwordState.isValid === false ? classes.invalid : ""
-          }`} 
+          }`}
         >
           <label htmlFor="password">Password</label>
           <input
