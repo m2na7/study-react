@@ -47,6 +47,14 @@ const Checkout = (props) => {
     if (!formIsValid) {
       return;
     }
+
+    props.onConfirm({
+        // 수집된 정보를 객체화 (s)
+        name: enteredName,
+        street: enteredStreet,
+        city: enteredCity,
+        postalCode: enteredPostalCode
+    });
   };
 
   const nameControlClasses = `${classes.control} ${
