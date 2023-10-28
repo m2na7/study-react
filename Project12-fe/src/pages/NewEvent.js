@@ -1,4 +1,5 @@
 import { json, redirect } from "react-router-dom";
+
 import EventForm from "../components/EventForm";
 
 function NewEventPage() {
@@ -8,7 +9,7 @@ function NewEventPage() {
 export default NewEventPage;
 
 export async function action({ request, params }) {
-  const data = request.formData();
+  const data = await request.formData();
 
   const eventData = {
     title: data.get("title"),
@@ -17,7 +18,7 @@ export async function action({ request, params }) {
     description: data.get("description"),
   };
 
-  const response = fetch("http://localhost:8080/events", {
+  const response = await fetch("http://localhost:8080/events", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -26,12 +27,7 @@ export async function action({ request, params }) {
   });
 
   if (!response.ok) {
-    throw json(
-      { message: "Could not save event." },
-      {
-        status: 500,
-      }
-    );
+    throw json({ message: "Could not save event." }, { status: 500 });
   }
 
   return redirect("/events");
