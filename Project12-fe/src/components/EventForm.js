@@ -1,12 +1,13 @@
 import {
   Form,
-  useActionData,
   useNavigate,
   useNavigation,
+  useActionData,
   json,
   redirect,
 } from "react-router-dom";
 
+import { getAuthToken } from "../util/auth";
 import classes from "./EventForm.module.css";
 
 function EventForm({ method, event }) {
@@ -19,16 +20,16 @@ function EventForm({ method, event }) {
   function cancelHandler() {
     navigate("..");
   }
+
   return (
     <Form method={method} className={classes.form}>
-      {data &&
-        data.errors && ( // 데이터가 제출 되었는지 && 데이터가 에러인지
-          <ul>
-            {Object.values(data.errors).map((err) => (
-              <li key={err}>{err}</li>
-            ))}
-          </ul>
-        )}
+      {data && data.errors && (
+        <ul>
+          {Object.values(data.errors).map((err) => (
+            <li key={err}>{err}</li>
+          ))}
+        </ul>
+      )}
       <p>
         <label htmlFor="title">Title</label>
         <input
@@ -74,7 +75,7 @@ function EventForm({ method, event }) {
           Cancel
         </button>
         <button disabled={isSubmitting}>
-          {isSubmitting ? "Submitting ..." : "Save"}
+          {isSubmitting ? "Submitting..." : "Save"}
         </button>
       </div>
     </Form>
@@ -96,15 +97,17 @@ export async function action({ request, params }) {
 
   let url = "http://localhost:8080/events";
 
-  if (method == "PATCH") {
+  if (method === "PATCH") {
     const eventId = params.eventId;
     url = "http://localhost:8080/events/" + eventId;
   }
 
+  const token = getAuthToken();
   const response = await fetch(url, {
     method: method,
     headers: {
       "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
     },
     body: JSON.stringify(eventData),
   });

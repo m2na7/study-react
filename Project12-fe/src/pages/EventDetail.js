@@ -9,6 +9,7 @@ import {
 
 import EventItem from "../components/EventItem";
 import EventsList from "../components/EventsList";
+import { getAuthToken } from "../util/auth";
 
 function EventDetailPage() {
   const { event, events } = useRouteLoaderData("event-detail");
@@ -77,9 +78,13 @@ export async function loader({ request, params }) {
 
 export async function action({ params, request }) {
   const eventId = params.eventId;
+  const token = getAuthToken;
   const response = await fetch("http://localhost:8080/events/" + eventId, {
     // request.method => delete (EventItem) 하드코딩 하지 않는 습관 !
     method: request.method,
+    headers: {
+      Authorization: "Bearer" + token,
+    },
   });
   if (!response.ok) {
     throw json(
