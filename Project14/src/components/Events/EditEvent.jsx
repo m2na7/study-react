@@ -45,6 +45,7 @@ export default function EditEvent() {
   //   },
   // });
 
+  // 실제 http 요청 X, action 함수를 트리거
   function handleSubmit(formData) {
     submit(formData, { method: "PUT" });
   }
