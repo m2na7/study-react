@@ -11,11 +11,11 @@ export default function NewProject({ onAdd }) {
     const enteredDescription = description.current.value;
     const enteredDueDate = dueDate.current.value;
 
-    onAdd({
-      title: enteredTitle,
-      description: enteredDescription,
-      dueDate: enteredDueDate,
-    });
+      onAdd({
+        title: enteredTitle,
+        description: enteredDescription,
+        dueDate: enteredDueDate,
+      });
   }
 
   return (
